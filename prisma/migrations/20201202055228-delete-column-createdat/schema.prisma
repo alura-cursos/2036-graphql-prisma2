@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model Post {
@@ -37,7 +37,6 @@ model Review {
   reviewerId  Int
   reviewer    User      @relation(fields: [reviewerId], references: [id])
   nota        Int
-  createdAt   DateTime? @default(now()) 
 
   @@map(name: "reviews")
 }
