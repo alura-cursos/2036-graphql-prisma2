@@ -24,6 +24,10 @@ const typeDefs = gql`
     postsByUser (id: Int): [Post]
     postsByReviewer (id: Int): [Post]
   }
+
+  type Mutation {
+    createUserAndPost (nome: String, email: String, titulo: String, conteudo: String): User
+  }
 `
 
 const resolvers = {
@@ -43,6 +47,23 @@ const resolvers = {
       .findUnique({ where: { id: Number(args.id) } })
       .reviewer()
       .posts()
+   },
+ },
+ Mutation: {
+   createUserAndPost: async (_, args) => {
+     const newUser = await prisma.user.create({
+       data: {
+         nome: args.nome,
+         email: args.email,
+         posts: {
+           create: {
+             titulo: args.titulo,
+             conteudo: args.conteudo
+           }
+         }
+       }
+     })
+     return newUser
    }
  }
 }
