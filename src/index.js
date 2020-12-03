@@ -21,6 +21,8 @@ const typeDefs = gql`
 
   type Query {
     users: [User]
+    postsByUser (id: Int): [Post]
+    postsByReviewer (id: Int): [Post]
   }
 `
 
@@ -30,7 +32,18 @@ const resolvers = {
      include: {
        posts: true
      }
-   })
+   }),
+   postsByUser: async (_, args) => {
+     return prisma.user
+      .findUnique({ where: { id: Number(args.id) }})
+      .posts()
+   },
+   postsByReviewer: async (_, args) => {
+     return prisma.review
+      .findUnique({ where: { id: Number(args.id) } })
+      .reviewer()
+      .posts()
+   }
  }
 }
 
