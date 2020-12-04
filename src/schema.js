@@ -4,7 +4,7 @@ const path = require('path')
 
 const User = objectType({
   name: 'User',
-  definitions(t) {
+  definition(t) {
     t.model.id()
     t.model.nome()
     t.model.email()
@@ -15,7 +15,7 @@ const User = objectType({
 
 const Post = objectType({
   name: 'Post',
-  definitions(t) {
+  definition(t) {
     t.model.id()
     t.model.titulo()
     t.model.conteudo()
@@ -27,7 +27,7 @@ const Post = objectType({
 
 const Review = objectType({
   name: 'Review',
-  definitions(t) {
+  definition(t) {
     t.model.id()
     t.model.post()
     t.model.reviewer()
@@ -38,7 +38,7 @@ const Review = objectType({
 
 const Query = queryType({
   name: 'Query',
-  definitions(t) {
+  definition(t) {
     t.list.field('users', {
       type: 'User',
       resolve: (_, __, { prisma }) => {
