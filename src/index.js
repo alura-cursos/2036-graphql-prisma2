@@ -1,5 +1,6 @@
 const { ApolloServer, gql } = require('apollo-server')
 const { PrismaClient } = require('@prisma/client')
+const { GraphQLSchema, GraphQLObjectType } = require('graphql')
 
 const prisma = new PrismaClient()
 
