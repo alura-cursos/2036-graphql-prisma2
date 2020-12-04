@@ -1,4 +1,6 @@
-const { objectType } = require('@nexus/schema')
+const { objectType, queryType, makeSchema } = require('@nexus/schema')
+const { nexusPrisma } = require('nexus-plugin-prisma')
+const path = require('path')
 
 const User = objectType({
   name: 'User',
@@ -33,3 +35,26 @@ const Review = objectType({
     t.model.createdAt()
   }
 })
+
+const Query = queryType({
+  name: 'Query',
+  definitions(t) {
+    t.list.field('users', {
+      type: 'User',
+      resolve: (_, __, { prisma }) => {
+        return prisma.user.findMany()
+      }
+    })
+  }
+})
+
+const schema = makeSchema({
+  types: [ Query, Review, Post, User ],
+  plugins: [nexusPrisma()],
+  outputs: {
+    schema: path.join(__dirname, 'schema.graphql'),
+    typegen: path.join(__dirname, '../prisma/generated','nexus.ts')
+  }
+})
+
+module.exports = schema
