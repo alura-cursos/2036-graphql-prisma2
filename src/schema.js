@@ -39,18 +39,24 @@ const Review = objectType({
 const Query = queryType({
   name: 'Query',
   definition(t) {
-    t.list.field('users', {
-      type: 'User',
-      resolve: (_, __, { prisma }) => {
-        return prisma.user.findMany()
-      }
+    t.crud.users({
+      filtering: true,
+      ordering: true
     })
+    t.crud.user()
+    t.crud.reviews()
+    // t.list.field('users', {
+    //   type: 'User',
+    //   resolve: (_, __, { prisma }) => {
+    //     return prisma.user.findMany()
+    //   }
+    // })
   }
 })
 
 const schema = makeSchema({
   types: [ Query, Review, Post, User ],
-  plugins: [nexusPrisma()],
+  plugins: [nexusPrisma({ experimentalCRUD: true })],
   outputs: {
     schema: path.join(__dirname, 'schema.graphql'),
     typegen: path.join(__dirname, '../prisma/generated','nexus.ts')
