@@ -42,6 +42,10 @@ input IntFilter {
   notIn: [Int!]
 }
 
+type Mutation {
+  createOnePost(data: PostCreateInput!): Post!
+}
+
 input NestedBoolFilter {
   equals: Boolean
   not: NestedBoolFilter
@@ -103,6 +107,53 @@ type Post {
   titulo: String!
 }
 
+input PostCreateInput {
+  autor: UserCreateOneWithoutPostsInput!
+  conteudo: String!
+  createdAt: DateTime
+  publicado: Boolean
+  Review: ReviewCreateManyWithoutPostInput
+  titulo: String!
+}
+
+input PostCreateManyWithoutAutorInput {
+  connect: [PostWhereUniqueInput!]
+  connectOrCreate: [PostCreateOrConnectWithoutautorInput!]
+  create: [PostCreateWithoutAutorInput!]
+}
+
+input PostCreateOneWithoutReviewInput {
+  connect: PostWhereUniqueInput
+  connectOrCreate: PostCreateOrConnectWithoutReviewInput
+  create: PostCreateWithoutReviewInput
+}
+
+input PostCreateOrConnectWithoutautorInput {
+  create: PostCreateWithoutAutorInput!
+  where: PostWhereUniqueInput!
+}
+
+input PostCreateOrConnectWithoutReviewInput {
+  create: PostCreateWithoutReviewInput!
+  where: PostWhereUniqueInput!
+}
+
+input PostCreateWithoutAutorInput {
+  conteudo: String!
+  createdAt: DateTime
+  publicado: Boolean
+  Review: ReviewCreateManyWithoutPostInput
+  titulo: String!
+}
+
+input PostCreateWithoutReviewInput {
+  autor: UserCreateOneWithoutPostsInput!
+  conteudo: String!
+  createdAt: DateTime
+  publicado: Boolean
+  titulo: String!
+}
+
 input PostListRelationFilter {
   every: PostWhereInput
   none: PostWhereInput
@@ -139,6 +190,40 @@ type Review {
   nota: Int!
   post: Post!
   reviewer: User!
+}
+
+input ReviewCreateManyWithoutPostInput {
+  connect: [ReviewWhereUniqueInput!]
+  connectOrCreate: [ReviewCreateOrConnectWithoutpostInput!]
+  create: [ReviewCreateWithoutPostInput!]
+}
+
+input ReviewCreateManyWithoutReviewerInput {
+  connect: [ReviewWhereUniqueInput!]
+  connectOrCreate: [ReviewCreateOrConnectWithoutreviewerInput!]
+  create: [ReviewCreateWithoutReviewerInput!]
+}
+
+input ReviewCreateOrConnectWithoutpostInput {
+  create: ReviewCreateWithoutPostInput!
+  where: ReviewWhereUniqueInput!
+}
+
+input ReviewCreateOrConnectWithoutreviewerInput {
+  create: ReviewCreateWithoutReviewerInput!
+  where: ReviewWhereUniqueInput!
+}
+
+input ReviewCreateWithoutPostInput {
+  createdAt: DateTime
+  nota: Int!
+  reviewer: UserCreateOneWithoutReviewInput!
+}
+
+input ReviewCreateWithoutReviewerInput {
+  createdAt: DateTime
+  nota: Int!
+  post: PostCreateOneWithoutReviewInput!
 }
 
 input ReviewListRelationFilter {
@@ -189,6 +274,42 @@ type User {
   id: Int!
   nome: String!
   posts(after: PostWhereUniqueInput, before: PostWhereUniqueInput, first: Int, last: Int): [Post!]!
+}
+
+input UserCreateOneWithoutPostsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutpostsInput
+  create: UserCreateWithoutPostsInput
+}
+
+input UserCreateOneWithoutReviewInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutReviewInput
+  create: UserCreateWithoutReviewInput
+}
+
+input UserCreateOrConnectWithoutpostsInput {
+  create: UserCreateWithoutPostsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutReviewInput {
+  create: UserCreateWithoutReviewInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateWithoutPostsInput {
+  createdAt: DateTime
+  email: String!
+  nome: String!
+  Review: ReviewCreateManyWithoutReviewerInput
+}
+
+input UserCreateWithoutReviewInput {
+  createdAt: DateTime
+  email: String!
+  nome: String!
+  posts: PostCreateManyWithoutAutorInput
 }
 
 input UserOrderByInput {
