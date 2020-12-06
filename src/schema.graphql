@@ -179,6 +179,8 @@ input PostWhereUniqueInput {
 }
 
 type Query {
+  buscaAutoresPublicados(email: String!): [User]
+  postsAprovados: [Post]
   reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int): [Review!]!
   user(where: UserWhereUniqueInput!): User
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, orderBy: [UserOrderByInput!], where: UserWhereInput): [User!]!

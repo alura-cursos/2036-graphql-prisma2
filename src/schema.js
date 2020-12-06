@@ -1,4 +1,4 @@
-const { objectType, queryType, makeSchema, mutationType } = require('@nexus/schema')
+const { objectType, queryType, makeSchema, mutationType, nonNull, stringArg } = require('@nexus/schema')
 const { nexusPrisma } = require('nexus-plugin-prisma')
 const path = require('path')
 
@@ -45,6 +45,31 @@ const Query = queryType({
     })
     t.crud.user()
     t.crud.reviews()
+    t.list.field('postsAprovados', {
+      type: 'Post',
+      resolve: (_, __, { prisma }) => {
+        return prisma.post.findMany({
+          where: { publicado: true },
+          orderBy: {
+            createdAt: 'desc'
+          }
+        })
+      }
+    })
+    t.list.field('buscaAutoresPublicados', {
+      type: 'User',
+      args: {
+        email: nonNull(stringArg())
+      },
+      resolve: (_, args, { prisma }) => {
+        return prisma.user.findMany({
+          where: {
+            email: { contains: args.email },
+            posts: { some: { publicado: true } } //every
+          }
+        })
+      }
+    })
   }
 })
 
